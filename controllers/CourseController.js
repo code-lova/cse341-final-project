@@ -89,7 +89,22 @@ exports.getCourses = async (req, res, next) => {
     #swagger.responses[500] = { description: 'Server error' }
   */
 
-    // WRITE THE CODE TO COMPLETE THIS FUNCTION - TASK FOR ANDRE
+    try{
+      
+      //find all courses
+      const courses = await courseService.getAllCourses();
+
+      //check if courses is empty
+
+      if (!courses || courses.length === 0) {
+        return res.status(404).json({ message: "No course data found" });
+      }
+
+      return res.status(200).json(courses);
+    }
+    catch (error) {
+      next(error);
+    }
  
 };
 
@@ -113,9 +128,24 @@ exports.getCourseById = async (req, res, next) => {
     #swagger.responses[500] = { description: 'Failed to fetch course details' }
   */
 
-    // WRITE THE CODE TO COMPLETE THIS FUNCTION - TASK FOR ANDRE
+    //get the id from the request params
+
+    try {
+      const { id } = req.params;
+
+
+      const course = await courseService.findCourseById(id);
+
+      if (!course) {
+        return res.status(404).json({ message: "Course not found" });
+      }
+
+      return res.status(200).json(course);
+    } catch (error) {
+      next(error);
 
 };
+}
 
 //Delete a task
 exports.deleteCourse = async (req, res, next) => {
