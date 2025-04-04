@@ -21,7 +21,7 @@ const updateCourse = async (id, data) => {
 };
 
 // Fetch all Course -- Task for Andre
-const getAllCourse = async () => {
+const getAllCourses = async () => {
   return await Course.find();
 };
 
@@ -39,7 +39,7 @@ module.exports = {
   createNewCourse,
   findCourseTitle,
   updateCourse,
-  getAllCourse,
+  getAllCourses,
   getCourseById,
   findCourseById,
   deleteCourse,

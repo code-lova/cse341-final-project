@@ -31,6 +31,7 @@ const createtCourseSchema = Joi.object({
     "any.only": "CourseType must be 'free' or 'paid'",
   }),
 
+  instructor: Joi.string(),
 });
 
 const updateCourseSchema = Joi.object({
@@ -60,7 +61,6 @@ const updateCourseSchema = Joi.object({
   }),
 
   instructor: Joi.string(),
-  students: Joi.string(),
 });
 
 module.exports = { createtCourseSchema, updateCourseSchema };
