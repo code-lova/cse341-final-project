@@ -6,7 +6,7 @@ const doc = {
     description: `API for managing courses, enrollment, progress and users.`,
     version: "1.0.0",
   },
-  host: "https://cse341-final-project-r9c4.onrender.com", //"localhost:8080" // Change this when deploying
+  host: "cse341-final-project-r9c4.onrender.com", //"localhost:8080" // Change this when deploying
   schemes: ["http", "https"],
   consumes: ["application/json"],
   produces: ["application/json"],
