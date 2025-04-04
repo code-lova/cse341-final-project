@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   createEnrollment,
-  //   getEnrollment,
+  getEnrollments,
   deleteEnrollment,
 } = require("../controllers/EnrollmentController");
 
@@ -20,7 +20,7 @@ router.post("/create", validateEnrollment.validateCreateEnrollment, createEnroll
  * @route GET /api/enrollments
  * @desc Get all enrollement - task for Andre
  */
-//router.get("/", getEnrollments);
+router.get("/", getEnrollments);
 
 /**
  * @route DELETE /api/enrollments/:id

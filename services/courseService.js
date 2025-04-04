@@ -21,14 +21,14 @@ const updateCourse = async (id, data) => {
 };
 
 // Fetch all Course -- Task for Andre
-// const getAllCourse = async () => {
-//   return await Task.find();
-// };
+const getAllCourse = async () => {
+  return await Course.find();
+};
 
 // get a course by Id -- Task for Andre
-// const getCourseById = async (id) => {
-//   return await Task.findById(id);
-// };
+const getCourseById = async (id) => {
+  return await Course.findById(id);
+};
 
 // Delete a Task
 const deleteCourse = async (id) => {
@@ -39,8 +39,8 @@ module.exports = {
   createNewCourse,
   findCourseTitle,
   updateCourse,
-  //   getAllCourse,
-  //   getCourseById,
+  getAllCourse,
+  getCourseById,
   findCourseById,
   deleteCourse,
 };

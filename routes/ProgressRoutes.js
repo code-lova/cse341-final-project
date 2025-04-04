@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {
-  updateProgress,
-  //getProgress,
-} = require("../controllers/progressController");
+const { updateProgress, getProgress } = require("../controllers/progressController");
 
 const validateProgress = require("../middleware/ProgressValidator");
 //const authorizeRole = require("../middleware/authorizeRole");
@@ -19,6 +16,6 @@ router.post("/update", validateProgress.validateCreateProgress, updateProgress);
  * @route GET /api/progress/:userId/:courseId -- Task for Andre
  * @desc Get progress of a student for a specific course
  */
-// router.get("/:studentId/:courseId", getProgress);
+router.get("/:studentId/:courseId", getProgress);
 
 module.exports = router;

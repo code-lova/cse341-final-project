@@ -2,7 +2,6 @@ const createHttpError = require("http-errors");
 const enrollmentService = require("../services/enrollmentService");
 const courseService = require("../services/courseService"); // Import course service
 
-
 // Create a new Enrollment
 exports.createEnrollment = async (req, res, next) => {
   /*
@@ -60,22 +59,18 @@ exports.getEnrollments = async (req, res, next) => {
     #swagger.responses[500] = { description: 'Server error' }
   */
 
+  try {
+    //find all courses
+    const enrollments = await enrollmentService.getAllEnrollments();
 
-    try{
-
-      //find all courses
-      const enrollments = await enrollmentService.getAllEnrollments();
-
-      if (!enrollments || enrollments.length === 0) {
-        return next(createHttpError(404, "No enrollment data found"));
-      }
-
-      return res.status(200).json(enrollments);
+    if (!enrollments || enrollments.length === 0) {
+      return next(createHttpError(404, "No enrollment data found"));
     }
-    catch (error) {
-      next(error);
-    }
- 
+
+    return res.status(200).json(enrollments);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // Delete an enrollment

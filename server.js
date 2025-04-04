@@ -10,7 +10,6 @@ const courseRoutes = require("./routes/courseRoutes");
 const enrollmentRoutes = require("./routes/EnrollmentRoutes");
 const progressRoutes = require("./routes/ProgressRoutes");
 
-
 require("dotenv").config();
 
 const app = express();
@@ -29,7 +28,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/courses", courseRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/enrollments", enrollmentRoutes)
+app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/progress", progressRoutes);
 //app.use("/api/auth", authRoutes); // Add OAuth routes
 

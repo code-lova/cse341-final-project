@@ -79,64 +79,60 @@ exports.updateUser = async (req, res, next) => {
 // Fetch all users details task for Andre
 exports.getAllUsers = async (req, res, next) => {
   /*
-      #swagger.tags = ['Users']
-      #swagger.summary = 'Retrieve all User'
-      #swagger.description = 'Fetches all users from the database. Will Requires Google OAuth2 authentication'
-      #swagger.security = [{ BearerAuth: [] }]
-      #swagger.responses[200] = {
-        description: 'List of User retrieved successfully',
-        schema: { $ref: '#/definitions/User' }
-      }
-      #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
-      #swagger.responses[404] = { description: 'No user data found' }
-      #swagger.responses[500] = { description: 'Server error' }
-    */
-  
-      try {
-        const users = await userService.getAllUsers();
-        if (!users || users.length === 0) {
-          return res.status(404).json({ message: "No users found" });
-        }
-        return res.status(200).json({ users });
-      } catch (error) {
-        next(error);
-      }
-      
+    #swagger.tags = ['Users']
+    #swagger.summary = 'Retrieve all User'
+    #swagger.description = 'Fetches all users from the database. Will Requires Google OAuth2 authentication'
+    #swagger.responses[200] = {
+      description: 'List of User retrieved successfully',
+      schema: { $ref: '#/definitions/User' }
+    }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[404] = { description: 'No user data found' }
+    #swagger.responses[500] = { description: 'Server error' }
+  */
+
+  try {
+    const users = await userService.getAllUsers();
+    if (!users || users.length === 0) {
+      return next(createHttpError(404, "No User data found"));
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // fetch User by id - Task for Andre
 exports.getUserById = async (req, res, next) => {
   /*
-      #swagger.tags = ['Users']
-      #swagger.summary = 'Retrieve a User by ID..'
-      #swagger.description = 'Fetches User details by ID. Will Requires Google OAuth2 authentication.'
-      
-      #swagger.parameters['id'] = {
-        in: 'path',
-        description: 'ID of the User to retrieve',
-        required: true,
-        type: 'string'
-      }
-      #swagger.responses[200] = {
-        description: 'User details retrieved successfully',
-        schema: { $ref: '#/definitions/User' }
-      }
-      #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
-      #swagger.responses[404] = { description: 'User not found' }
-      #swagger.responses[500] = { description: 'Failed to fetch user details' }
-    */
-
+    #swagger.tags = ['Users']
+    #swagger.summary = 'Retrieve a User by ID..'
+    #swagger.description = 'Fetches User details by ID. Will Requires Google OAuth2 authentication.'
     
-      try {
-        const user = await userService.getUserById(req.params.id);
-        if (!user) {
-          return res.status(404).json({ message: "User not found" });
-        }
-        return res.status(200).json({ user });
-      } catch (error) {
-        next(error);
-      }
- 
+    #swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID of the User to retrieve',
+      required: true,
+      type: 'string'
+    }
+    #swagger.responses[200] = {
+      description: 'User details retrieved successfully',
+      schema: { $ref: '#/definitions/User' }
+    }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[404] = { description: 'User not found' }
+    #swagger.responses[500] = { description: 'Failed to fetch user details' }
+  */
+
+  try {
+    const user = await userService.getUserById(req.params.id);
+    if (!user) {
+      return next(createHttpError(404, "User not found"));
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    next(error);
+  }
 };
 
 //Delete a user

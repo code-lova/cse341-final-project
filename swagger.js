@@ -30,7 +30,7 @@ const doc = {
       name: "Jane Matther",
       email: "owenbrown99@yahoo.com",
       role: "student",
-      password: "secure123"
+      password: "secure123",
     },
     Course: {
       instructor: "123664849955",

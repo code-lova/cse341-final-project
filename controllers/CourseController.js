@@ -25,7 +25,7 @@ exports.createCourse = async (req, res, next) => {
       return next(createHttpError(409, "Task title already exists"));
     }
 
-    const data = { title, description, priority, instructor, duration, amount, courseType };
+    const data = { title, description, instructor, duration, amount, courseType };
     const newCourse = await courseService.createNewCourse(data);
     if (!newCourse) {
       return next(createHttpError(500, "Failed to create new course"));
@@ -67,8 +67,8 @@ exports.updateCourse = async (req, res, next) => {
       throw createHttpError(404, "Course not found");
     }
     return res.json({
-        updatedCourse,
-        message: "Course updated successfully",
+      updatedCourse,
+      message: "Course updated successfully",
     });
   } catch (error) {
     next(error);
@@ -89,23 +89,19 @@ exports.getCourses = async (req, res, next) => {
     #swagger.responses[500] = { description: 'Server error' }
   */
 
-    try{
-      
-      //find all courses
-      const courses = await courseService.getAllCourses();
+  try {
+    //find all courses
+    const courses = await courseService.getAllCourses();
 
-      //check if courses is empty
+    //check if courses is empty
 
-      if (!courses || courses.length === 0) {
-        return res.status(404).json({ message: "No course data found" });
-      }
-
-      return res.status(200).json(courses);
+    if (!courses || courses.length === 0) {
+      return next(createHttpError(404, "No Course data found"));
     }
-    catch (error) {
-      next(error);
-    }
- 
+    return res.status(200).json(courses);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // fetch course by id -- task for Andre
@@ -128,24 +124,22 @@ exports.getCourseById = async (req, res, next) => {
     #swagger.responses[500] = { description: 'Failed to fetch course details' }
   */
 
-    //get the id from the request params
+  //get the id from the request params
 
-    try {
-      const { id } = req.params;
+  try {
+    const id = req.params.id;
 
+    const course = await courseService.findCourseById(id);
 
-      const course = await courseService.findCourseById(id);
+    if (!course) {
+      return next(createHttpError(404, "Course not found"));
+    }
 
-      if (!course) {
-        return res.status(404).json({ message: "Course not found" });
-      }
-
-      return res.status(200).json(course);
-    } catch (error) {
-      next(error);
-
+    return res.status(200).json(course);
+  } catch (error) {
+    next(error);
+  }
 };
-}
 
 //Delete a task
 exports.deleteCourse = async (req, res, next) => {

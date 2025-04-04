@@ -26,25 +26,25 @@ const findUserByEmail = async (email) => {
 };
 
 // Get all users - Task for Andre
- const getAllUsers = async () => {
-   return await User.find().select("-password"); // Exclude password field
+const getAllUsers = async () => {
+  return await User.find().select("-password"); // Exclude password field
 };
 
 // Get user by ID - Task for Andre
- const getUserById = async (id) => {
+const getUserById = async (id) => {
   return await User.findById(id).select("-password");
- };
+};
 
 // Delete user by ID
 const deleteUser = async (id) => {
   return await User.findByIdAndDelete(id);
 };
 
-module.exports = { 
-    createUser, 
-    findUserByEmail, 
-    updateUser, 
-    deleteUser,
-    getAllUsers, 
-    getUserById
+module.exports = {
+  createUser,
+  findUserByEmail,
+  updateUser,
+  deleteUser,
+  getAllUsers,
+  getUserById,
 };

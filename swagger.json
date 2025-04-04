@@ -109,7 +109,60 @@
         }
       }
     },
+    "/api/courses/": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Retrieve all courses",
+        "description": "Fetches all courses from the database. Will Requires Google OAuth2 authentication.",
+        "responses": {
+          "200": {
+            "description": "List of courses retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          },
+          "404": {
+            "description": "No course data found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/courses/{id}": {
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "summary": "Retrieve a course by ID",
+        "description": "Fetches course by ID. Will Requires Google OAuth2 authentication",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the course to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course details retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Course"
+            }
+          },
+          "404": {
+            "description": "Course not found"
+          },
+          "500": {
+            "description": "Failed to fetch course details"
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Courses"
@@ -201,7 +254,66 @@
         }
       }
     },
+    "/api/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Retrieve all User",
+        "description": "Fetches all users from the database. Will Requires Google OAuth2 authentication",
+        "responses": {
+          "200": {
+            "description": "List of User retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "404": {
+            "description": "No user data found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Retrieve a User by ID..",
+        "description": "Fetches User details by ID. Will Requires Google OAuth2 authentication.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the User to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Failed to fetch user details"
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Users"
@@ -270,6 +382,29 @@
         }
       }
     },
+    "/api/enrollments/": {
+      "get": {
+        "tags": [
+          "Enrollment"
+        ],
+        "summary": "Retrieve all enrollment",
+        "description": "Fetches all enrollment from the database. Will Requires Google OAuth2 authentication.",
+        "responses": {
+          "200": {
+            "description": "List of student enrollment retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Enrollment"
+            }
+          },
+          "404": {
+            "description": "No enrollment data found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/api/enrollments/{id}": {
       "delete": {
         "tags": [
@@ -329,6 +464,40 @@
           },
           "500": {
             "description": "Failed to update progress"
+          }
+        }
+      }
+    },
+    "/api/progress/{studentId}/{courseId}": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "summary": "Retrieve student progress",
+        "description": "Fetches the progress percentage of a student in a specific course.",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress retrieved successfully"
+          },
+          "404": {
+            "description": "Progress data not found"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }

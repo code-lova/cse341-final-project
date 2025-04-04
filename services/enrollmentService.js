@@ -12,8 +12,8 @@ const findEnrollment = async (studentId, courseId) => {
 
 // Get all enrollments -- Task for Andre
 const getAllEnrollments = async () => {
-   return await Enrollment.find().populate("studentId courseId");
- };
+  return await Enrollment.find().populate("studentId courseId");
+};
 
 // Delete an enrollment by ID
 const deleteEnrollment = async (id) => {
