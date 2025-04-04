@@ -26,14 +26,14 @@ const findUserByEmail = async (email) => {
 };
 
 // Get all users - Task for Andre
-// const getUsers = async () => {
-//   return await User.find().select("-password"); // Exclude password field
-// };
+ const getAllUsers = async () => {
+   return await User.find().select("-password"); // Exclude password field
+};
 
 // Get user by ID - Task for Andre
-// const getUserById = async (id) => {
-//   return await User.findById(id).select("-password");
-// };
+ const getUserById = async (id) => {
+  return await User.findById(id).select("-password");
+ };
 
 // Delete user by ID
 const deleteUser = async (id) => {
@@ -45,6 +45,6 @@ module.exports = {
     findUserByEmail, 
     updateUser, 
     deleteUser,
-    // getUsers, 
-    // getUserById
+    getAllUsers, 
+    getUserById
 };

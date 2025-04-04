@@ -77,7 +77,7 @@ exports.updateUser = async (req, res, next) => {
 };
 
 // Fetch all users details task for Andre
-exports.getUsers = async (req, res, next) => {
+exports.getAllUsers = async (req, res, next) => {
   /*
       #swagger.tags = ['Users']
       #swagger.summary = 'Retrieve all User'
@@ -92,7 +92,15 @@ exports.getUsers = async (req, res, next) => {
       #swagger.responses[500] = { description: 'Server error' }
     */
   
-      // WRITE THE CODE TO COMPLETE THIS FUNCTION 
+      try {
+        const users = await userService.getAllUsers();
+        if (!users || users.length === 0) {
+          return res.status(404).json({ message: "No users found" });
+        }
+        return res.status(200).json({ users });
+      } catch (error) {
+        next(error);
+      }
       
 };
 
@@ -118,7 +126,16 @@ exports.getUserById = async (req, res, next) => {
       #swagger.responses[500] = { description: 'Failed to fetch user details' }
     */
 
-      // WRITE THE CODE TO COMPLETE THIS FUNCTION - TASK FOR ANDRE
+    
+      try {
+        const user = await userService.getUserById(req.params.id);
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json({ user });
+      } catch (error) {
+        next(error);
+      }
  
 };
 
