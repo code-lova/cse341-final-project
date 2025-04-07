@@ -8,12 +8,10 @@ const updateProgress = async (studentId, courseId, progressValue) => {
   );
 };
 
-// Get progress for a student in a course
-const getProgress = async (studentId, courseId) => {
-  return await Progress.findOne({ studentId, courseId });
-};
+// Get progress for a student in a course -- Task for Andre
+// ----- complete the code here for getProgress------
 
 module.exports = {
   updateProgress,
-  getProgress,
+  //getProgress,
 };

@@ -42,7 +42,7 @@ exports.updateProgress = async (req, res, next) => {
   }
 };
 
-// Get progress
+// Get progress -- TASK for Andre
 exports.getProgress = async (req, res, next) => {
   /*
     #swagger.tags = ['Progress']
@@ -52,15 +52,5 @@ exports.getProgress = async (req, res, next) => {
     #swagger.responses[404] = { description: 'Progress data not found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
-  const { studentId, courseId } = req.params;
-
-  try {
-    const progress = await progressService.getProgress(studentId, courseId);
-    if (!progress) {
-      return next(createHttpError(404, "No progress data found"));
-    }
-    return res.status(200).json(progress);
-  } catch (error) {
-    next(error);
-  }
+  // Please complete the code to get all progress
 };

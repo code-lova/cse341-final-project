@@ -10,8 +10,6 @@ const enrollmentSchema = Joi.object({
     "string.empty": "Course ID is required",
     "any.required": "Course ID is required",
   }),
-
 });
 
 module.exports = { enrollmentSchema };
-

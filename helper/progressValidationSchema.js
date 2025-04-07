@@ -1,6 +1,5 @@
 const Joi = require("joi");
 
-
 const progressSchema = Joi.object({
   studentId: Joi.string().required().messages({
     "string.empty": "Student ID is required",
@@ -18,9 +17,6 @@ const progressSchema = Joi.object({
     "number.max": "Progress value cannot exceed 100%",
     "any.required": "Progress value is required",
   }),
-
 });
 
-
 module.exports = { progressSchema };
-

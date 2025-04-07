@@ -58,19 +58,7 @@ exports.getEnrollments = async (req, res, next) => {
     #swagger.responses[404] = { description: 'No enrollment data found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
-
-  try {
-    //find all courses
-    const enrollments = await enrollmentService.getAllEnrollments();
-
-    if (!enrollments || enrollments.length === 0) {
-      return next(createHttpError(404, "No enrollment data found"));
-    }
-
-    return res.status(200).json(enrollments);
-  } catch (error) {
-    next(error);
-  }
+  //Please add code to comeplete the function
 };
 
 // Delete an enrollment

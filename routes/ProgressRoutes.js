@@ -16,6 +16,6 @@ router.post("/update", validateProgress.validateCreateProgress, updateProgress);
  * @route GET /api/progress/:userId/:courseId -- Task for Andre
  * @desc Get progress of a student for a specific course
  */
-router.get("/:studentId/:courseId", getProgress);
+//router.get("/:studentId/:courseId", getProgress);
 
 module.exports = router;
