@@ -12,4 +12,15 @@ const validateCreateProgress = (req, res, next) => {
   next();
 };
 
-module.exports = { validateCreateProgress };
+const validateUpdateProgress = (req, res, next) => {
+  const { error } = ProgressSchema.updateProgressSchema.validate(req.body, { abortEarly: false });
+
+  if (error) {
+    const errorMessages = error.details.map((detail) => detail.message);
+    return next(createHttpError(400, `Validation Error: ${errorMessages.join(", ")}`));
+  }
+
+  next();
+};
+
+module.exports = { validateCreateProgress, validateUpdateProgress };

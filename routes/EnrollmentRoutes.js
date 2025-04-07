@@ -37,7 +37,7 @@ router.put(
  * @route GET /api/enrollments
  * @desc Get all enrollement - task for Andre
  */
-//router.get("/", getEnrollments);
+//router.get("/", authenticateUser, getEnrollments);
 
 /**
  * @route DELETE /api/enrollments/:id

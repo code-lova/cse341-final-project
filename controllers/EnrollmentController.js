@@ -68,6 +68,7 @@ exports.updateEnrollment = async (req, res, next) => {
     }
     #swagger.responses[200] = { description: 'Enrollment updated successfully' }
     #swagger.responses[400] = { description: 'Invalid input' }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'Enrollment or Course not found' }
     #swagger.responses[409] = { description: 'Already enrolled in this course' }
     #swagger.responses[500] = { description: 'Server error' }
@@ -114,6 +115,7 @@ exports.getEnrollments = async (req, res, next) => {
       description: 'List of student enrollment retrieved successfully',
       schema: { $ref: '#/definitions/Enrollment' }
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'No enrollment data found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
@@ -124,7 +126,7 @@ exports.getEnrollments = async (req, res, next) => {
 exports.deleteEnrollment = async (req, res, next) => {
   /*
       #swagger.tags = ['Enrollment']
-      #swagger.summary = 'Unenroll from a course'
+      #swagger.summary = 'Unenroll from a course (Must be authenticated and Instructors only)'
       #swagger.description = 'Removes an enrollment by ID. Requires Google OAuth2 authentication.'
       #swagger.parameters['id'] = {
         in: 'path',
