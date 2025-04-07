@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   createProgress,
-  getProgress,
+  getAllProgress,
   updateProgress,
   deleteProgress,
 } = require("../controllers/progressController");
@@ -24,10 +24,10 @@ router.post(
 );
 
 /**
- * @route GET /api/progress/:userId/:courseId -- Task for Andre
- * @desc Get progress of a student for a specific course
+ * @route GET /api/progress/ -- Task for Andre
+ * @desc Get progress of a all student
  */
-//router.get("/:studentId/:courseId", getProgress);
+//router.get("/", authenticateUser, authorizeRole("instructor"), getAllProgress);
 
 /**
  * @route PUT /api/progress/:studentId/:courseId
@@ -43,15 +43,10 @@ router.put(
 );
 
 /**
- * @route DELETE /api/progress/:studentId/:courseId
+ * @route DELETE /api/progress/:id
  * @desc Delete progress of a student for a specific course
  */
 // DELETE - Delete progress
-router.delete(
-  "/:studentId/:courseId",
-  authenticateUser,
-  authorizeRole("instructor"),
-  deleteProgress
-);
+router.delete("/:id", authenticateUser, authorizeRole("instructor"), deleteProgress);
 
 module.exports = router;

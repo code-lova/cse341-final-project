@@ -17,8 +17,8 @@ const updateProgress = async (studentId, courseId, progressValue) => {
 };
 
 // Delete progress
-const deleteProgress = async (studentId, courseId) => {
-  return await Progress.findOneAndDelete({ studentId, courseId });
+const deleteProgress = async (id) => {
+  return await Progress.findOneAndDelete(id);
 };
 
 module.exports = {

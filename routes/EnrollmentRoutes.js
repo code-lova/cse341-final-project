@@ -41,7 +41,7 @@ router.put(
 
 /**
  * @route DELETE /api/enrollments/:id
- * @desc Unenroll from a course by (students only)
+ * @desc Unenroll from a course by (students and instructor can access only)
  */
 router.delete("/:id", deleteEnrollment);
 

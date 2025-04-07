@@ -43,7 +43,7 @@ exports.createProgress = async (req, res, next) => {
 };
 
 // Get progress -- TASK for Andre
-exports.getProgress = async (req, res, next) => {
+exports.getAllProgress = async (req, res, next) => {
   /*
     #swagger.tags = ['Progress']
     #swagger.summary = 'Retrieve student progress'
@@ -109,11 +109,9 @@ exports.deleteProgress = async (req, res, next) => {
       #swagger.responses[404] = { description: 'Progress not found' }
       #swagger.responses[500] = { description: 'Failed to delete progress' }
     */
-  const { courseId } = req.params;
-  const studentId = req.user.id;
-
+  const id = req.params.id;
   try {
-    const deleted = await progressService.deleteProgress(studentId, courseId);
+    const deleted = await progressService.deleteProgress(id);
     if (!deleted) return next(createHttpError(404, "Progress not found"));
     return res.status(200).json({ message: "Progress deleted successfully" });
   } catch (error) {
