@@ -2,10 +2,10 @@
   "swagger": "2.0",
   "info": {
     "title": "E-Learning Course Management API",
-    "description": "API for managing courses, enrollment, progress and users.",
+    "description": "\n    API for managing courses, enrollment, progress and users.\n    \n    **Authentication Process:**\n    - Visit: [Google OAuth Login](https://cse341-final-project-r9c4.onrender.com/api/auth/google)\n    - Authenticate and get a token from the response.\n    - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.\n    - Now, all secured endpoints will be accessible.",
     "version": "1.0.0"
   },
-  "host": "cse341-final-project-r9c4.onrender.com",
+  "host": "localhost:8080",
   "basePath": "/",
   "tags": [
     {
@@ -29,6 +29,14 @@
     "http",
     "https"
   ],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "\n      **Authentication Required**\n      - First, visit: [Google OAuth Login](https://cse341-final-project-r9c4.onrender.com/api/auth/google)\n      - Copy the returned token.\n      - Click **Authorize** (🔑) at the top and enter: **Bearer your_auth_token**."
+    }
+  },
   "consumes": [
     "application/json"
   ],
@@ -55,6 +63,11 @@
         "description": "Creates a new course detail. Requires Google OAuth2 authentication",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "description": "course details",
@@ -71,10 +84,18 @@
           "400": {
             "description": "Validation Error"
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
           "500": {
             "description": "Failed to create course"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/courses/update/{id}": {
@@ -93,6 +114,11 @@
             "description": "Course ID"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "description": "Updated course details",
@@ -106,7 +132,12 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/courses/": {
@@ -116,6 +147,13 @@
         ],
         "summary": "Retrieve all courses",
         "description": "Fetches all courses from the database. Will Requires Google OAuth2 authentication.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of courses retrieved successfully",
@@ -123,13 +161,21 @@
               "$ref": "#/definitions/Course"
             }
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
           "404": {
             "description": "No course data found"
           },
           "500": {
             "description": "Server error"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/courses/{id}": {
@@ -146,6 +192,11 @@
             "required": true,
             "type": "string",
             "description": "ID of the course to retrieve"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -155,13 +206,21 @@
               "$ref": "#/definitions/Course"
             }
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
           "404": {
             "description": "Course not found"
           },
           "500": {
             "description": "Failed to fetch course details"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -176,11 +235,19 @@
             "required": true,
             "type": "string",
             "description": "ID of the course to delete"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "course deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
           },
           "404": {
             "description": "course not found"
@@ -188,7 +255,12 @@
           "500": {
             "description": "Failed to delete course"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/users/register": {
@@ -228,7 +300,7 @@
           "Users"
         ],
         "summary": "Update user by Id. Accessible to all logged-in users",
-        "description": "Updates an existing User. Will Requires Google OAuth2 authentication. later",
+        "description": "Updates an existing User. Will Requires Google OAuth2 authentication.",
         "parameters": [
           {
             "name": "id",
@@ -236,6 +308,11 @@
             "required": true,
             "type": "string",
             "description": "User ID"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           },
           {
             "name": "body",
@@ -251,7 +328,12 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/users/": {
@@ -261,6 +343,13 @@
         ],
         "summary": "Retrieve all User",
         "description": "Fetches all users from the database. Will Requires Google OAuth2 authentication",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of User retrieved successfully",
@@ -277,7 +366,12 @@
           "500": {
             "description": "Server error"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/users/{id}": {
@@ -294,6 +388,11 @@
             "required": true,
             "type": "string",
             "description": "ID of the User to retrieve"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -312,7 +411,12 @@
           "500": {
             "description": "Failed to fetch user details"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -327,6 +431,11 @@
             "required": true,
             "type": "string",
             "description": "ID of the Users to delete"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -342,7 +451,12 @@
           "500": {
             "description": "Failed to delete Users"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/enrollments/create": {
@@ -353,6 +467,11 @@
         "summary": "Enroll for a new Course",
         "description": "Creates a new enrollment detail. Requires Google OAuth2 authentication",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -370,6 +489,9 @@
           "400": {
             "description": "Validation Error"
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
           "404": {
             "description": "Course not found"
           },
@@ -379,30 +501,69 @@
           "500": {
             "description": "Failed to create course"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
-    "/api/enrollments/": {
-      "get": {
+    "/api/enrollments/update/{id}": {
+      "put": {
         "tags": [
           "Enrollment"
         ],
-        "summary": "Retrieve all enrollment",
-        "description": "Fetches all enrollment from the database. Will Requires Google OAuth2 authentication.",
+        "summary": "Update enrollment details",
+        "description": "Updates an existing enrollment by ID. Requires Google OAuth2 authentication.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the enrollment to update"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated enrollment details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/enrollmentInput"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "List of student enrollment retrieved successfully",
-            "schema": {
-              "$ref": "#/definitions/Enrollment"
-            }
+            "description": "Enrollment updated successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
           },
           "404": {
-            "description": "No enrollment data found"
+            "description": "Enrollment or Course not found"
+          },
+          "409": {
+            "description": "Already enrolled in this course"
           },
           "500": {
             "description": "Server error"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/enrollments/{id}": {
@@ -410,7 +571,7 @@
         "tags": [
           "Enrollment"
         ],
-        "summary": "Unenroll from a course",
+        "summary": "Unenroll from a course (Must be authenticated and Instructors only)",
         "description": "Removes an enrollment by ID. Requires Google OAuth2 authentication.",
         "parameters": [
           {
@@ -434,14 +595,19 @@
         }
       }
     },
-    "/api/progress/update": {
+    "/api/progress/create": {
       "post": {
         "tags": [
           "Progress"
         ],
-        "summary": "Update course progress (Instructors only)",
-        "description": "Updates the progress percentage for a student in a specific course. Requires Google OAuth2 authentication",
+        "summary": "Create course progress (Instructors only)",
+        "description": "Create the progress percentage for a student in a specific course. Requires Google OAuth2 authentication",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -454,7 +620,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Progress updated successfully"
+            "description": "Progress created successfully"
           },
           "400": {
             "description": "Validation error"
@@ -469,12 +635,12 @@
       }
     },
     "/api/progress/{studentId}/{courseId}": {
-      "get": {
+      "put": {
         "tags": [
           "Progress"
         ],
-        "summary": "Retrieve student progress",
-        "description": "Fetches the progress percentage of a student in a specific course.",
+        "summary": "Update student progress (Instructor only)",
+        "description": "Updates an existing progress by ID. Requires Google OAuth2 authentication.",
         "parameters": [
           {
             "name": "studentId",
@@ -487,17 +653,110 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "course ID of the progress to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated progress details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/progressInput"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Progress retrieved successfully"
+            "description": "Progress updated successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
           },
           "404": {
-            "description": "Progress data not found"
+            "description": "update failed or progress not found"
           },
           "500": {
             "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Progress"
+        ],
+        "summary": "Remove a progress report (Must be authenticated and Instructors only)",
+        "description": "Removes a progress by ID. Requires Google OAuth2 authentication.",
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the enrollment to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress deleted successfully"
+          },
+          "404": {
+            "description": "Progress not found"
+          },
+          "500": {
+            "description": "Failed to delete progress"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

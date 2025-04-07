@@ -67,7 +67,7 @@ exports.updateEnrollment = async (req, res, next) => {
       schema: { $ref: '#/definitions/enrollmentInput' }
     }
     #swagger.responses[200] = { description: 'Enrollment updated successfully' }
-    #swagger.responses[400] = { description: 'Invalid input' }
+    #swagger.responses[400] = { description: 'Validation Error' }
     #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'Enrollment or Course not found' }
     #swagger.responses[409] = { description: 'Already enrolled in this course' }

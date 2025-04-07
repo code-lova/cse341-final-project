@@ -3,7 +3,14 @@ const swaggerAutogen = require("swagger-autogen")();
 const doc = {
   info: {
     title: "E-Learning Course Management API",
-    description: `API for managing courses, enrollment, progress and users.`,
+    description: `
+    API for managing courses, enrollment, progress and users.
+    
+    **Authentication Process:**
+    - Visit: [Google OAuth Login](https://cse341-final-project-r9c4.onrender.com/api/auth/google)
+    - Authenticate and get a token from the response.
+    - Click **Authorize** (🔑) in Swagger UI and enter your token as: **Bearer your_auth_token**.
+    - Now, all secured endpoints will be accessible.`,
     version: "1.0.0",
   },
   host: "localhost:8080", //"cse341-final-project-r9c4.onrender.com",  // Change this when deploying
@@ -16,6 +23,18 @@ const doc = {
     { name: "Enrollment", description: "Student enrollment endpoints" },
     { name: "Progress", description: "Student progress endpoints" },
   ],
+  securityDefinitions: {
+    BearerAuth: {
+      type: "apiKey",
+      name: "Authorization",
+      in: "header",
+      description: `
+      **Authentication Required**
+      - First, visit: [Google OAuth Login](https://cse341-final-project-r9c4.onrender.com/api/auth/google)
+      - Copy the returned token.
+      - Click **Authorize** (🔑) at the top and enter: **Bearer your_auth_token**.`,
+    },
+  },
   definitions: {
     User: {
       id: "12345673884495",
