@@ -12,4 +12,16 @@ const enrollmentSchema = Joi.object({
   }),
 });
 
-module.exports = { enrollmentSchema };
+const UpdateEnrollmentSchema = Joi.object({
+  studentId: Joi.string().required().messages({
+    "string.empty": "Student ID is required",
+    "any.required": "Student ID is required",
+  }),
+
+  courseId: Joi.string().required().messages({
+    "string.empty": "Course ID is required",
+    "any.required": "Course ID is required",
+  }),
+});
+
+module.exports = { enrollmentSchema, UpdateEnrollmentSchema };

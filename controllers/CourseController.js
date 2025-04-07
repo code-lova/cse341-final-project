@@ -7,6 +7,7 @@ exports.createCourse = async (req, res, next) => {
     #swagger.tags = ['Courses']
     #swagger.summary = 'Create a new Course'
     #swagger.description = 'Creates a new course detail. Requires Google OAuth2 authentication'.
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['body'] = {
       in: 'body',
       description: 'course details',
@@ -14,10 +15,11 @@ exports.createCourse = async (req, res, next) => {
       schema: { $ref: '#/definitions/courseInput' }
     }
     #swagger.responses[400] = { description: 'Validation Error' }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[500] = { description: 'Failed to create course' }
   */
-  const { title, description, instructor, duration, amount, courseType } = req.body;
-  //const instructor = req.user.id;
+  const { title, description, duration, amount, courseType } = req.body;
+  const instructor = req.user.id;
 
   try {
     const existingCourse = await courseService.findCourseTitle(title);
@@ -42,6 +44,7 @@ exports.updateCourse = async (req, res, next) => {
    #swagger.tags = ['Courses']
     #swagger.summary = 'Update course by Id (Instructor only)'
     #swagger.description = 'Updates an existing course. Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'Course ID',
@@ -81,10 +84,12 @@ exports.getCourses = async (req, res, next) => {
     #swagger.tags = ['Courses']
     #swagger.summary = 'Retrieve all courses'
     #swagger.description = 'Fetches all courses from the database. Will Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.responses[200] = {
       description: 'List of courses retrieved successfully',
       schema: { $ref: '#/definitions/Course' }
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'No course data found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
@@ -110,6 +115,7 @@ exports.getCourseById = async (req, res, next) => {
     #swagger.tags = ['Courses']
     #swagger.summary = 'Retrieve a course by ID'
     #swagger.description = 'Fetches course by ID. Will Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the course to retrieve',
@@ -120,11 +126,10 @@ exports.getCourseById = async (req, res, next) => {
       description: 'Course details retrieved successfully',
       schema: { $ref: '#/definitions/Course' }
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'Course not found' }
     #swagger.responses[500] = { description: 'Failed to fetch course details' }
   */
-
-  //get the id from the request params
 
   try {
     const id = req.params.id;
@@ -147,12 +152,14 @@ exports.deleteCourse = async (req, res, next) => {
     #swagger.tags = ['Courses']
     #swagger.summary = 'Delete a Course (Instructor only)'
     #swagger.description = 'Deletes a course by ID. Will Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the course to delete',
       required: true,
       type: 'string'
     }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[200] = { description: 'course deleted successfully' }
     #swagger.responses[404] = { description: 'course not found' }
     #swagger.responses[500] = { description: 'Failed to delete course' }

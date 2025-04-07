@@ -42,7 +42,8 @@ exports.updateUser = async (req, res, next) => {
   /*
       #swagger.tags = ['Users']
       #swagger.summary = 'Update user by Id. Accessible to all logged-in users'
-      #swagger.description = 'Updates an existing User.  Will Requires Google OAuth2 authentication. later'
+      #swagger.description = 'Updates an existing User.  Will Requires Google OAuth2 authentication.'
+      #swagger.security = [{ BearerAuth: [] }]
       #swagger.parameters['id'] = {
         in: 'path',
         description: 'User ID',
@@ -82,6 +83,7 @@ exports.getAllUsers = async (req, res, next) => {
     #swagger.tags = ['Users']
     #swagger.summary = 'Retrieve all User'
     #swagger.description = 'Fetches all users from the database. Will Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.responses[200] = {
       description: 'List of User retrieved successfully',
       schema: { $ref: '#/definitions/User' }
@@ -108,7 +110,7 @@ exports.getUserById = async (req, res, next) => {
     #swagger.tags = ['Users']
     #swagger.summary = 'Retrieve a User by ID..'
     #swagger.description = 'Fetches User details by ID. Will Requires Google OAuth2 authentication.'
-    
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['id'] = {
       in: 'path',
       description: 'ID of the User to retrieve',
@@ -141,7 +143,7 @@ exports.deleteUser = async (req, res, next) => {
       #swagger.tags = ['Users']
       #swagger.summary = 'Delete a Users.'
       #swagger.description = 'Deletes a User from the database by ID. Will Requires Google OAuth2 authentication'
-     
+      #swagger.security = [{ BearerAuth: [] }]
       #swagger.parameters['id'] = {
         in: 'path',
         description: 'ID of the Users to delete',
@@ -150,7 +152,6 @@ exports.deleteUser = async (req, res, next) => {
       }
       #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
       #swagger.responses[200] = { description: 'Users deleted successfully' }
-      
       #swagger.responses[404] = { description: 'Users not found' }
       #swagger.responses[500] = { description: 'Failed to delete Users' }
     */

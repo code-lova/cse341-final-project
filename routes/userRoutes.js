@@ -9,8 +9,7 @@ const {
 } = require("../controllers/userController");
 
 const validateUser = require("../middleware/userValidator");
-//const authorizeRole = require("../middleware/authorizeRole");
-//const authenticateUser = require("../middleware/authMiddleware");
+const authenticateUser = require("../middleware/authMiddleware");
 
 /**
  * @route POST /api/users/register
@@ -22,24 +21,24 @@ router.post("/register", validateUser.validateCreateUser, registerUser);
  * @route PUT /api/users/update/:id
  * @desc update a user by id (Accessible to all logged-in users)
  */
-router.put("/update/:id", validateUser.validateUpdateUser, updateUser);
+router.put("/update/:id", authenticateUser, validateUser.validateUpdateUser, updateUser);
 
 /**
  * @route GET /api/users
  * @desc Get all users (Accessible to all logged-in users) --  task for Andre
  */
-router.get("/", getAllUsers);
+router.get("/", authenticateUser, getAllUsers);
 
 /**
  * @route GET /api/users/:id
  * @desc Get a user by ID (Accessible to all logged-in users) -- task for Andre
  */
-router.get("/:id", getUserById);
+router.get("/:id", authenticateUser, getUserById);
 
 /**
  * @route DELETE /api/users/:id
  * @desc Delete a user by ID (Accessible to all logged-in users)
  */
-router.delete("/:id", deleteUser);
+router.delete("/:id", authenticateUser, deleteUser);
 
 module.exports = router;

@@ -10,6 +10,16 @@ const findEnrollment = async (studentId, courseId) => {
   return await Enrollment.findOne({ studentId, courseId });
 };
 
+// Find enrollment by ID
+const findEnrollmentById = async (id) => {
+  return await Enrollment.findById(id);
+};
+
+// Update enrollment by ID
+const updateEnrollment = async (id, data) => {
+  return await Enrollment.findByIdAndUpdate(id, data, { new: true });
+};
+
 // Get all enrollments -- Task for Andre
 //------ complete teh code here for getAllEnrollments-----
 
@@ -21,6 +31,8 @@ const deleteEnrollment = async (id) => {
 module.exports = {
   createNewEnrollment,
   findEnrollment,
+  findEnrollmentById,
+  updateEnrollment,
   // getAllEnrollments,
   deleteEnrollment,
 };

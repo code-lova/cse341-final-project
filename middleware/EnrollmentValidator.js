@@ -12,4 +12,17 @@ const validateCreateEnrollment = (req, res, next) => {
   next();
 };
 
-module.exports = { validateCreateEnrollment };
+const validateUpdateEnrollment = (req, res, next) => {
+  const { error } = EnrollmentSchema.UpdateEnrollmentSchema.validate(req.body, {
+    abortEarly: false,
+  });
+
+  if (error) {
+    const errorMessages = error.details.map((detail) => detail.message);
+    return next(createHttpError(400, `Validation Error: ${errorMessages.join(", ")}`));
+  }
+
+  next();
+};
+
+module.exports = { validateCreateEnrollment, validateUpdateEnrollment };
