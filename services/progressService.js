@@ -10,6 +10,9 @@ const createProgress = async (studentId, courseId, progressValue) => {
 
 // Get progress for a student in a course -- Task for Andre
 // ----- complete the code here for getProgress------
+const getProgress = async (studentId, courseId) => {
+  return await Progress.findOne({ studentId, courseId });
+};  
 
 // Update progress explicitly
 const updateProgress = async (studentId, courseId, progressValue) => {
@@ -23,7 +26,7 @@ const deleteProgress = async (id) => {
 
 module.exports = {
   createProgress,
-  //getProgress,
+  getProgress,
   updateProgress,
   deleteProgress,
 };

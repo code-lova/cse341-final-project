@@ -53,6 +53,16 @@ exports.getAllProgress = async (req, res, next) => {
     #swagger.responses[500] = { description: 'Server error' }
   */
   // Please complete the code to get all progress
+  const { studentId, courseId } = req.params;
+  try {
+    const progress = await progressService.getProgress(studentId, courseId);
+    if (!progress) {
+      return next(createHttpError(404, "Progress data not found"));
+    }
+    return res.status(200).json(progress);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // PUT - Update progress
