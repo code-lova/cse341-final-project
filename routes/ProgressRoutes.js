@@ -27,9 +27,8 @@ router.post(
  * @route GET /api/progress/ -- Task for Andre
  * @desc Get progress of a all student
  */
-// GET - Get progress of a student
-router.get("/:studentId/:courseId", authenticateUser, authorizeRole("instructor"), getAllProgress);
-
+// GET - Get progress of all student
+router.get("/", authenticateUser, authorizeRole("instructor"), getAllProgress);
 
 /**
  * @route PUT /api/progress/:studentId/:courseId
@@ -37,7 +36,7 @@ router.get("/:studentId/:courseId", authenticateUser, authorizeRole("instructor"
  */
 // PUT - Update progress
 router.put(
-  "/:studentId/:courseId",
+  "/:id",
   authenticateUser,
   authorizeRole("instructor"),
   validateProgress.validateUpdateProgress,

@@ -46,8 +46,8 @@ const doc = {
       __v: 0,
     },
     UserInput: {
-      name: "Jane Matther",
-      email: "owenbrown99@yahoo.com",
+      name: "Rebecca Jordan",
+      email: "rebecca2009@gmail.com",
       role: "student",
       password: "secure123",
     },
@@ -64,11 +64,9 @@ const doc = {
       __v: 0,
     },
     courseInput: {
-      instructor: "67d955d87203c86c07e8427a",
-      title: "CSE-341 Backend Services",
-      description:
-        "This is a course that will teach you techniques and ways to use node js to build api.",
-      duration: "1 Month",
+      title: "BUS-301 Business Test Course",
+      description: "This is a course that will teach you how to become effective professionally.",
+      duration: "2 Month",
       amount: "0.00",
       courseType: "free",
     },
@@ -80,8 +78,8 @@ const doc = {
       __v: 0,
     },
     enrollmentInput: {
-      studentId: "67d955d87203c86c07e8427a",
-      courseId: "67d955d87203c86c07e8427a",
+      studentId: "67ec033a833d5bc4560e4e14",
+      courseId: "67f443850e7dbb18d75d60cb",
     },
     Progress: {
       studentId: "67d955d87203c86c07e8427a",
@@ -92,15 +90,15 @@ const doc = {
       __v: 0,
     },
     progressInput: {
-      studentId: "67d955d87203c86c07e8427a",
-      courseId: "67d955d87203c86c07e8427a",
+      studentId: "67ec033a833d5bc4560e4e14",
+      courseId: "67f443850e7dbb18d75d60cb",
       progressValue: 65,
     },
   },
 };
 
 const outputFile = "./swagger.json";
-const endpointsFiles = ["./server.js"];
+const endpointsFiles = ["./app.js"];
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
   const fs = require("fs");

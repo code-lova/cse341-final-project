@@ -37,6 +37,33 @@ exports.registerUser = async (req, res, next) => {
   }
 };
 
+// Fetch all users details task for Andre
+exports.getAllUsers = async (req, res, next) => {
+  /*
+    #swagger.tags = ['Users']
+    #swagger.summary = 'Retrieve all User'
+    #swagger.description = 'Fetches all users from the database. Will Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
+    #swagger.responses[200] = {
+      description: 'List of User retrieved successfully',
+      schema: { $ref: '#/definitions/User' }
+    }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[404] = { description: 'No user data found' }
+    #swagger.responses[500] = { description: 'Server error' }
+  */
+
+  try {
+    const users = await userService.getAllUsers();
+    if (!users || users.length === 0) {
+      return next(createHttpError(404, "No User data found"));
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Update a user
 exports.updateUser = async (req, res, next) => {
   /*
@@ -72,33 +99,6 @@ exports.updateUser = async (req, res, next) => {
       updatedUser,
       message: "User updated successfully",
     });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Fetch all users details task for Andre
-exports.getAllUsers = async (req, res, next) => {
-  /*
-    #swagger.tags = ['Users']
-    #swagger.summary = 'Retrieve all User'
-    #swagger.description = 'Fetches all users from the database. Will Requires Google OAuth2 authentication'
-    #swagger.security = [{ BearerAuth: [] }]
-    #swagger.responses[200] = {
-      description: 'List of User retrieved successfully',
-      schema: { $ref: '#/definitions/User' }
-    }
-    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
-    #swagger.responses[404] = { description: 'No user data found' }
-    #swagger.responses[500] = { description: 'Server error' }
-  */
-
-  try {
-    const users = await userService.getAllUsers();
-    if (!users || users.length === 0) {
-      return next(createHttpError(404, "No User data found"));
-    }
-    res.status(200).json(users);
   } catch (error) {
     next(error);
   }

@@ -1,5 +1,5 @@
 const Joi = require("joi");
-
+const objectIdPattern = /^[0-9a-fA-F]{24}$/;
 const progressSchema = Joi.object({
   studentId: Joi.string().required().messages({
     "string.empty": "Student ID is required",
@@ -20,9 +20,12 @@ const progressSchema = Joi.object({
 });
 
 const updateProgressSchema = Joi.object({
-  courseId: Joi.string().required().messages({
-    "string.empty": "Course ID is required",
-    "any.required": "Course ID is required",
+  studentId: Joi.string().pattern(objectIdPattern).messages({
+    "string.pattern.base": "Student ID must be a valid MongoDB ObjectId",
+  }),
+
+  courseId: Joi.string().pattern(objectIdPattern).messages({
+    "string.pattern.base": "Course ID must be a valid MongoDB ObjectId",
   }),
 
   progressValue: Joi.number().min(0).max(100).required().messages({

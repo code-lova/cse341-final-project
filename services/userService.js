@@ -25,6 +25,11 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ email });
 };
 
+// Find user by id
+const findUserById = async (id) => {
+  return await User.findById(id);
+};
+
 // Get all users - Task for Andre
 const getAllUsers = async () => {
   return await User.find().select("-password"); // Exclude password field
@@ -47,4 +52,5 @@ module.exports = {
   deleteUser,
   getAllUsers,
   getUserById,
+  findUserById,
 };

@@ -22,7 +22,15 @@ const updateEnrollment = async (id, data) => {
 
 // Get all enrollments -- Task for Andre
 const getAllEnrollments = async () => {
-  return await Enrollment.find().populate("studentId courseId");
+  return await Enrollment.find().populate([
+    {
+      path: "studentId",
+      select: "-password",
+    },
+    {
+      path: "courseId",
+    },
+  ]);
 };
 
 // Delete an enrollment by ID

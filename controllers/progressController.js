@@ -1,6 +1,7 @@
 const createHttpError = require("http-errors");
 const progressService = require("../services/progressService");
 const courseService = require("../services/courseService");
+const userService = require("../services/userService");
 
 // Update progress
 exports.createProgress = async (req, res, next) => {
@@ -8,6 +9,7 @@ exports.createProgress = async (req, res, next) => {
     #swagger.tags = ['Progress']
     #swagger.summary = 'Create course progress (Instructors only)'
     #swagger.description = 'Create the progress percentage for a student in a specific course. Requires Google OAuth2 authentication'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.parameters['body'] = {
       in: 'body',
       description: 'Progress details',
@@ -15,14 +17,23 @@ exports.createProgress = async (req, res, next) => {
       schema: { $ref: '#/definitions/progressInput' }
     }
     #swagger.responses[200] = { description: 'Progress created successfully' }
-    #swagger.responses[400] = { description: 'Validation error' }
+    #swagger.responses[400] = { description: 'Validation Error' }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
     #swagger.responses[404] = { description: 'Course not found' }
     #swagger.responses[500] = { description: 'Failed to update progress' }
   */
-  const { courseId, progressValue } = req.body;
-  const studentId = req.user.id;
+  const { studentId, courseId, progressValue } = req.body;
 
   try {
+    // 1. Validate student existence and role
+    const user = await userService.findUserById(studentId);
+    if (!user) {
+      return next(createHttpError(404, "Student not found"));
+    }
+    if (user.role !== "student") {
+      return next(createHttpError(400, "User is not a student"));
+    }
+
     // Check if the course exists
     const courseExists = await courseService.findCourseById(courseId);
     if (!courseExists) {
@@ -47,16 +58,16 @@ exports.getAllProgress = async (req, res, next) => {
   /*
     #swagger.tags = ['Progress']
     #swagger.summary = 'Retrieve student progress'
-    #swagger.description = 'Fetches the progress percentage of a student in a specific course.'
+    #swagger.description = 'Fetches the progress percentage of all students in a specific course, Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
     #swagger.responses[200] = { description: 'Progress retrieved successfully' }
     #swagger.responses[404] = { description: 'Progress data not found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
   // Please complete the code to get all progress
-  const { studentId, courseId } = req.params;
   try {
-    const progress = await progressService.getProgress(studentId, courseId);
-    if (!progress) {
+    const progress = await progressService.getProgress();
+    if (!progress || progress.length === 0) {
       return next(createHttpError(404, "Progress data not found"));
     }
     return res.status(200).json(progress);
@@ -74,7 +85,7 @@ exports.updateProgress = async (req, res, next) => {
     #swagger.security = [{ BearerAuth: [] }]
      #swagger.parameters['id'] = {
       in: 'path',
-      description: 'course ID of the progress to update',
+      description: 'Progress ID to update',
       required: true,
       type: 'string'
     }
@@ -90,13 +101,33 @@ exports.updateProgress = async (req, res, next) => {
     #swagger.responses[404] = { description: 'update failed or progress not found' }
     #swagger.responses[500] = { description: 'Server error' }
   */
-  const { courseId } = req.params;
-  const { progressValue } = req.body;
-  const studentId = req.user.id;
+
+  const id = req.params.id;
+  const { studentId, courseId, progressValue } = req.body;
 
   try {
-    const updated = await progressService.updateProgress(studentId, courseId, progressValue);
-    if (!updated) return next(createHttpError(404, "Progress not found or update failed"));
+    // 1. Validate student existence and role
+    const user = await userService.findUserById(studentId);
+    if (!user) {
+      return next(createHttpError(404, "Student not found"));
+    }
+    if (user.role !== "student") {
+      return next(createHttpError(400, "User is not a student"));
+    }
+
+    const course = await courseService.findCourseById(courseId);
+    if (!course) {
+      return next(createHttpError(404, "Course not found"));
+    }
+
+    const updated = await progressService.updateProgress(id, {
+      studentId,
+      courseId,
+      progressValue,
+    });
+    if (!updated) {
+      return next(createHttpError(404, "Progress not found or update failed"));
+    }
     return res.status(200).json(updated);
   } catch (error) {
     next(error);
@@ -109,6 +140,8 @@ exports.deleteProgress = async (req, res, next) => {
       #swagger.tags = ['Progress']
       #swagger.summary = 'Remove a progress report (Must be authenticated and Instructors only)'
       #swagger.description = 'Removes a progress by ID. Requires Google OAuth2 authentication.'
+      #swagger.security = [{ BearerAuth: [] }]
+
       #swagger.parameters['id'] = {
         in: 'path',
         description: 'ID of the enrollment to delete',
@@ -116,6 +149,7 @@ exports.deleteProgress = async (req, res, next) => {
         type: 'string'
       }
       #swagger.responses[200] = { description: 'Progress deleted successfully' }
+      #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
       #swagger.responses[404] = { description: 'Progress not found' }
       #swagger.responses[500] = { description: 'Failed to delete progress' }
     */

@@ -38,6 +38,37 @@ exports.createCourse = async (req, res, next) => {
   }
 };
 
+// Fetch all task details -- Task for Andre
+exports.getCourses = async (req, res, next) => {
+  /*
+    #swagger.tags = ['Courses']
+    #swagger.summary = 'Retrieve all courses'
+    #swagger.description = 'Fetches all courses from the database. Will Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
+    #swagger.responses[200] = {
+      description: 'List of courses retrieved successfully',
+      schema: { $ref: '#/definitions/Course' }
+    }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[404] = { description: 'No course data found' }
+    #swagger.responses[500] = { description: 'Server error' }
+  */
+
+  try {
+    //find all courses
+    const courses = await courseService.getAllCourses();
+
+    //check if courses is empty
+
+    if (!courses || courses.length === 0) {
+      return next(createHttpError(404, "No Course data found"));
+    }
+    return res.status(200).json(courses);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Update a task
 exports.updateCourse = async (req, res, next) => {
   /*
@@ -73,37 +104,6 @@ exports.updateCourse = async (req, res, next) => {
       updatedCourse,
       message: "Course updated successfully",
     });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Fetch all task details -- Task for Andre
-exports.getCourses = async (req, res, next) => {
-  /*
-    #swagger.tags = ['Courses']
-    #swagger.summary = 'Retrieve all courses'
-    #swagger.description = 'Fetches all courses from the database. Will Requires Google OAuth2 authentication.'
-    #swagger.security = [{ BearerAuth: [] }]
-    #swagger.responses[200] = {
-      description: 'List of courses retrieved successfully',
-      schema: { $ref: '#/definitions/Course' }
-    }
-    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
-    #swagger.responses[404] = { description: 'No course data found' }
-    #swagger.responses[500] = { description: 'Server error' }
-  */
-
-  try {
-    //find all courses
-    const courses = await courseService.getAllCourses();
-
-    //check if courses is empty
-
-    if (!courses || courses.length === 0) {
-      return next(createHttpError(404, "No Course data found"));
-    }
-    return res.status(200).json(courses);
   } catch (error) {
     next(error);
   }

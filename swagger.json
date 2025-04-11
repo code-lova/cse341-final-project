@@ -544,7 +544,7 @@
             "description": "Enrollment updated successfully"
           },
           "400": {
-            "description": "Invalid input"
+            "description": "Validation Error"
           },
           "401": {
             "description": "Unauthorized: Invalid token or user not authenticated"
@@ -554,6 +554,44 @@
           },
           "409": {
             "description": "Already enrolled in this course"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/enrollments/": {
+      "get": {
+        "tags": [
+          "Enrollment"
+        ],
+        "summary": "Retrieve all enrollment",
+        "description": "Fetches all enrollment from the database. Will Requires Google OAuth2 authentication.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of student enrollment retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Enrollment"
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
+          "404": {
+            "description": "No enrollment data found"
           },
           "500": {
             "description": "Server error"
@@ -580,11 +618,19 @@
             "required": true,
             "type": "string",
             "description": "ID of the enrollment to delete"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Enrollment deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
           },
           "404": {
             "description": "Enrollment not found"
@@ -592,7 +638,12 @@
           "500": {
             "description": "Failed to delete enrollment"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/progress/create": {
@@ -623,7 +674,10 @@
             "description": "Progress created successfully"
           },
           "400": {
-            "description": "Validation error"
+            "description": "Validation Error"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
           },
           "404": {
             "description": "Course not found"
@@ -631,10 +685,47 @@
           "500": {
             "description": "Failed to update progress"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
-    "/api/progress/{studentId}/{courseId}": {
+    "/api/progress/": {
+      "get": {
+        "tags": [
+          "Progress"
+        ],
+        "summary": "Retrieve student progress",
+        "description": "Fetches the progress percentage of all students in a specific course, Requires Google OAuth2 authentication.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress retrieved successfully"
+          },
+          "404": {
+            "description": "Progress data not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/progress/{id}": {
       "put": {
         "tags": [
           "Progress"
@@ -643,27 +734,15 @@
         "description": "Updates an existing progress by ID. Requires Google OAuth2 authentication.",
         "parameters": [
           {
-            "name": "studentId",
+            "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "courseId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Progress ID to update"
           },
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "course ID of the progress to update",
-            "required": true,
             "type": "string"
           },
           {
@@ -707,27 +786,15 @@
         "description": "Removes a progress by ID. Requires Google OAuth2 authentication.",
         "parameters": [
           {
-            "name": "studentId",
+            "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "courseId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "ID of the enrollment to delete"
           },
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the enrollment to delete",
-            "required": true,
             "type": "string"
           }
         ],
@@ -735,13 +802,21 @@
           "200": {
             "description": "Progress deleted successfully"
           },
+          "401": {
+            "description": "Unauthorized: Invalid token or user not authenticated"
+          },
           "404": {
             "description": "Progress not found"
           },
           "500": {
             "description": "Failed to delete progress"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/api/auth/logout": {
@@ -801,11 +876,11 @@
       "properties": {
         "name": {
           "type": "string",
-          "example": "Jane Matther"
+          "example": "Rebecca Jordan"
         },
         "email": {
           "type": "string",
-          "example": "owenbrown99@yahoo.com"
+          "example": "rebecca2009@gmail.com"
         },
         "role": {
           "type": "string",
@@ -861,21 +936,17 @@
     "courseInput": {
       "type": "object",
       "properties": {
-        "instructor": {
-          "type": "string",
-          "example": "67d955d87203c86c07e8427a"
-        },
         "title": {
           "type": "string",
-          "example": "CSE-341 Backend Services"
+          "example": "BUS-301 Business Test Course"
         },
         "description": {
           "type": "string",
-          "example": "This is a course that will teach you techniques and ways to use node js to build api."
+          "example": "This is a course that will teach you how to become effective professionally."
         },
         "duration": {
           "type": "string",
-          "example": "1 Month"
+          "example": "2 Month"
         },
         "amount": {
           "type": "string",
@@ -917,11 +988,11 @@
       "properties": {
         "studentId": {
           "type": "string",
-          "example": "67d955d87203c86c07e8427a"
+          "example": "67ec033a833d5bc4560e4e14"
         },
         "courseId": {
           "type": "string",
-          "example": "67d955d87203c86c07e8427a"
+          "example": "67f443850e7dbb18d75d60cb"
         }
       }
     },
@@ -959,11 +1030,11 @@
       "properties": {
         "studentId": {
           "type": "string",
-          "example": "67d955d87203c86c07e8427a"
+          "example": "67ec033a833d5bc4560e4e14"
         },
         "courseId": {
           "type": "string",
-          "example": "67d955d87203c86c07e8427a"
+          "example": "67f443850e7dbb18d75d60cb"
         },
         "progressValue": {
           "type": "number",

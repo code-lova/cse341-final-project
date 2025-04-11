@@ -23,5 +23,15 @@ export default [
       quotes: ["error", "double"],
     },
   },
+  // ✅ Override for test files to include Jest globals
+  {
+    files: ["**/*.test.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.jest, // <-- added this line for balance
+      },
+    },
+  },
   prettierConfig, // Disable conflicting ESLint rules via Prettier
 ];

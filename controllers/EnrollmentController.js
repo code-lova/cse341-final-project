@@ -21,8 +21,7 @@ exports.createEnrollment = async (req, res, next) => {
     #swagger.responses[409] = { description: 'Student already enrolled in this course' }
     #swagger.responses[500] = { description: 'Failed to create course' }
   */
-  const { courseId } = req.body;
-  const studentId = req.user.id;
+  const { courseId, studentId } = req.body;
 
   try {
     // Check if the course exists
@@ -42,6 +41,33 @@ exports.createEnrollment = async (req, res, next) => {
       return next(createHttpError(500, "Failed to create new course"));
     }
     return res.status(201).json(newEnrollment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Fetch all enrollment details -- Task for Andre
+exports.getEnrollments = async (req, res, next) => {
+  /*
+    #swagger.tags = ['Enrollment']
+    #swagger.summary = 'Retrieve all enrollment'
+    #swagger.description = 'Fetches all enrollment from the database. Will Requires Google OAuth2 authentication.'
+    #swagger.security = [{ BearerAuth: [] }]
+    #swagger.responses[200] = {
+      description: 'List of student enrollment retrieved successfully',
+      schema: { $ref: '#/definitions/Enrollment' }
+    }
+    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
+    #swagger.responses[404] = { description: 'No enrollment data found' }
+    #swagger.responses[500] = { description: 'Server error' }
+  */
+
+  try {
+    const enrollments = await enrollmentService.getAllEnrollments();
+    if (!enrollments || enrollments.length === 0) {
+      return next(createHttpError(404, "No enrollment data found"));
+    }
+    res.status(200).json(enrollments);
   } catch (error) {
     next(error);
   }
@@ -75,8 +101,7 @@ exports.updateEnrollment = async (req, res, next) => {
   */
 
   const { id } = req.params;
-  const { courseId } = req.body;
-  const studentId = req.user.id;
+  const { studentId, courseId } = req.body;
 
   try {
     // Check if enrollment exists
@@ -105,37 +130,13 @@ exports.updateEnrollment = async (req, res, next) => {
   }
 };
 
-// Fetch all enrollment details -- Task for Andre
-exports.getEnrollments = async (req, res, next) => {
-  /*
-    #swagger.tags = ['Enrollment']
-    #swagger.summary = 'Retrieve all enrollment'
-    #swagger.description = 'Fetches all enrollment from the database. Will Requires Google OAuth2 authentication.'
-    #swagger.responses[200] = {
-      description: 'List of student enrollment retrieved successfully',
-      schema: { $ref: '#/definitions/Enrollment' }
-    }
-    #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
-    #swagger.responses[404] = { description: 'No enrollment data found' }
-    #swagger.responses[500] = { description: 'Server error' }
-  */
-  
-    try {
-    const enrollments = await enrollmentService.getAllEnrollments();
-    if (!enrollments || enrollments.length === 0) {
-      return next(createHttpError(404, "No enrollment data found"));
-    }
-    res.status(200).json(enrollments);
-  } catch (error) {
-    next(error);
-};
-}
 // Delete an enrollment
 exports.deleteEnrollment = async (req, res, next) => {
   /*
       #swagger.tags = ['Enrollment']
       #swagger.summary = 'Unenroll from a course (Must be authenticated and Instructors only)'
       #swagger.description = 'Removes an enrollment by ID. Requires Google OAuth2 authentication.'
+      #swagger.security = [{ BearerAuth: [] }]
       #swagger.parameters['id'] = {
         in: 'path',
         description: 'ID of the enrollment to delete',
@@ -143,6 +144,7 @@ exports.deleteEnrollment = async (req, res, next) => {
         type: 'string'
       }
       #swagger.responses[200] = { description: 'Enrollment deleted successfully' }
+      #swagger.responses[401] = { description: 'Unauthorized: Invalid token or user not authenticated' }
       #swagger.responses[404] = { description: 'Enrollment not found' }
       #swagger.responses[500] = { description: 'Failed to delete enrollment' }
     */

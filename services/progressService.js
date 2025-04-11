@@ -2,21 +2,26 @@ const Progress = require("../models/Progress");
 
 // Create progress for a student in a course
 const createProgress = async (studentId, courseId, progressValue) => {
-  return await Progress.findOneAndUpdate(
-    { studentId, courseId, progressValue },
-    { new: true, upsert: true }
-  );
+  return await Progress.create({ studentId, courseId, progressValue });
 };
 
-// Get progress for a student in a course -- Task for Andre
+// Get progress for all student -- Task for Andre
 // ----- complete the code here for getProgress------
-const getProgress = async (studentId, courseId) => {
-  return await Progress.findOne({ studentId, courseId });
-};  
+const getProgress = async () => {
+  return await Progress.find().populate([
+    {
+      path: "studentId",
+      select: "-password",
+    },
+    {
+      path: "courseId",
+    },
+  ]);
+};
 
 // Update progress explicitly
-const updateProgress = async (studentId, courseId, progressValue) => {
-  return await Progress.findOneAndUpdate({ studentId, courseId }, { progressValue }, { new: true });
+const updateProgress = async (id, updateData) => {
+  return await Progress.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
 };
 
 // Delete progress
